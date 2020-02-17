@@ -2,13 +2,24 @@ import pandas as pd
 from bs4 import BeautifulSoup
 import requests
 
-req = requests.get('https://www.basketball-reference.com/leagues/NBA_2018_totals.html')
-if req.status_code == 200:
-    print('Requisição bem sucedida!')
-    content = req.content
+def scrape_stats(base_url, year_start, year_end):
+    years = range(year_start,year_end+1,1)
 
-soup = BeautifulSoup(content, 'html.parser')
-table = soup.find(name='table')
+    final_df = pd.DataFrame()
 
-table_str = soup.find(name='table', attrs={'id':'confs_standings_W'})
-df = pd.read_html(table_str))[0]
+    for year in years:
+        print('Extraindo ano {}'.format(year))
+        req_url = base_url.format(year)
+        req = requests.get(req_url)
+        soup = BeautifulSoup(req.content, 'html.parser')
+        table = soup.find('table', {'id':'totals_stats'})
+        df = pd.read_html(str(table))[0]
+        df['Year'] = year
+        final_df = final_df.append(df)
+
+return final_df
+
+
+url = 'https://www.basketball-reference.com/leagues/NBA_{}_totals.html'
+df = scrape_stats(url, 2013, 2018)
+
