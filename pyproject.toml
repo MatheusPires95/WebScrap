@@ -2,12 +2,13 @@
 name = "webscrap"
 version = "0.1.0"
 description = ""
-authors = ["Your Name <you@example.com>"]
+authors = ["macp0411@gmail.com"]
 
 [tool.poetry.dependencies]
 python = "^3.7"
 requests = "^2.22.0"
 pandas = "^1.0.1"
+bs4 = "^0.0.1"
 
 [tool.poetry.dev-dependencies]
 
